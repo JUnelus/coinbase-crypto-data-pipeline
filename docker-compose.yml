@@ -1,0 +1,18 @@
+version: '3.9'
+
+services:
+  crypto-pipeline:
+    build: .
+    container_name: coinbase-crypto-pipeline
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+      - ./coinbase_data.db:/app/coinbase_data.db
+    environment:
+      - ENV=production
+      - LOG_LEVEL=INFO
+      - CRYPTO_PAIRS=BTC-USD,ETH-USD,SOL-USD
+      - FETCH_INTERVAL=60
+    restart: unless-stopped
+    command: python main.py --products BTC-USD ETH-USD SOL-USD --plot
+
